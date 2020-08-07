@@ -6,7 +6,7 @@ Marshal White
 
 1.0 To begin the game, render the board
   1.1 Randomly generate locations of mines on X percentage of board squares.
-  1.2 Generate an array of numbers for all squares of the board.  If one or more mines are located in an adjacent square, the number will reflect the number of adjacent mines.
+  1.2 Create a nested array of numbers for rows/squares of the board.  If one or more mines are located in an adjacent square, the number will reflect the number of adjacent mines.
 
 2.0 Handling Square Clicks
   2.1 If a square has a number, uncover it.
