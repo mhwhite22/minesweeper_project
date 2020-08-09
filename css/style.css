@@ -1,20 +1,18 @@
 h1 {
-    
+    display: flex;
+    align-self: center;
 }
 header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: inline;
     margin-top: 20vh;
-    
 }
 
 #wrapper {
     width: 90vw;
     max-width: 100vw;
     height: 10vh;
-    align-content: space-around;
+    align-items: center;
+    justify-content: center;
     background-color: #808080;
 }
 
@@ -24,28 +22,35 @@ main {
     align-items: center;
 }
 
-#board {
-    display: grid;
+#boardwrapper {
+    display: flex;
+    flex-direction: column;
     border: 0.5px solid #595959;
     background-color: #cccccc;
-    grid-template: repeat(4, 1fr) / repeat(5, 1fr);
-    width: 26vw;
-    height: 25vh;
+    max-width: 50vw;
+    max-height: 40vh;
     align-content: center;
     justify-content: center;
-    row-gap: 0.5px;
     margin-top: 10vh;
-
-
-
+}
+td {
+    height: 5vh;
+    width: 5vw;
+    border: 1px solid #595959;
+    gap: 0.5px;
+}
+table {
+    table-layout: fixed;
+    width: 26vw;
+    height: 26vh;
+    empty-cells: show;
 }
 
 .square {
     height: 5vh;
     width: 5vw;
-    border: 1px solid #808080;
+    border: 1px solid #595959;
     gap: 0.5px;
-    row-gap: 0.5px;
 }   
 
 bottom {
@@ -54,9 +59,11 @@ bottom {
   }
 #replay {
     font-size: 2vmin;
+    display: ;
+    text-align: center;
     font-weight: bold;
-    width: 5vw;
-    height: 3vh;
+    width: 14vw;
+    height: 4vh;
     padding: 2vmin;
     margin-top: 6vmin;
     border: .3vmin solid grey;
@@ -64,6 +71,10 @@ bottom {
     border-radius: 2vmin;
     outline: none;
     cursor: pointer;
+  }
+  #replay:active {
+      box-shadow: inset 0px 0px 5px #c1c1c1;
+      outline: none;
   }
 
 #replay:hover {
