@@ -24,7 +24,6 @@ let boardArr = [
 ];
 
 let winner = null;
-let timerStart = null;
 let boardSize = null;
 let gameOver = null;
 
@@ -34,16 +33,22 @@ const squareEls = document.querySelectorAll('.square');
 const indvSquare = document.querySelector('.square');
 const boardEl = document.querySelector('#cells');
 const msgEl = document.querySelector('span');
-const buttonEl = document.querySelector('button');
+const replayBtn = document.querySelector('#replay');
+const timerEl = document.querySelector('#timer');
+const flagBtn = document.querySelector('#flag');
 
 /*----- event listeners -----*/
 
 squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
-buttonEl.addEventListener('click', handleBtnClick);
+replayBtn.addEventListener('click', handleBtnClick);
+
+
+flagBtn.addEventListener('click', flagClick);
 
 /*----- functions -----*/
 
 function init() {
+    gameOver = false;
     boardArr.map((row, i) => {
         row.map((sq, j) => {
             boardArr[i][j] = {
@@ -103,29 +108,55 @@ function render() {
 }
 function gameOverMsg() {
     msgEl.innerHTML = 'Game Over!';
-    buttonEl.innerHTML = 'Play Again';
+    replayBtn.innerHTML = 'Play Again';
     return;
 }
 function clearBoard() {
     squareEls.forEach(indvSquare => indvSquare.textContent = '');
     msgEl.innerHTML = '';
-    buttonEl.innerHTML = 'Start';
+    replayBtn.innerHTML = 'Start';
 }
-
-
+function flagClick(e) {
+    squareEls.forEach(e => e.addEventListener('contextmenu', placeFlag),{once : true})
+}
+function placeFlag(e) {
+    e.preventDefault();
+    let i = e.target.parentElement.rowIndex;
+    let j = e.target.cellIndex;
+    const currentSq = boardArr[i][j];
+    if (currentSq.isFlagged === false) {
+        currentSq.isFlagged = true;
+    } else {
+        currentSq.isFlagged = false;
+    }
+    console.log(boardArr);
+}
+function startTimer(){
+    // let startTime;
+    // let tInterval;
+    // run = 0
+    // if(!run){
+    //     startTime = new Date().getTime();
+    //     tInterval = setInterval(getTime, 1000);
+    // timerEl.innerHTML = startTime;
+    // }
+}
 
 /*----- event handler functions -----*/
 function handleSquareClick(e) {
     let i = e.target.parentElement.rowIndex;
     let j = e.target.cellIndex;
     const currentSq = boardArr[i][j];
-    if (currentSq.hasMine === true){
+    if (currentSq.hasMine === true && currentSq.isFlagged === true) {
+        return;
+    } else if 
+        (currentSq.hasMine === true && currentSq.isFlagged === false){
         currentSq.isCovered = false;
         gameOver = true;
         console.log('boom!')
         gameOverMsg();
         return;
-    } else if
+    } else if 
     (currentSq.isCovered === false && currentSq.proxNum === 0) {
         //insert sqexplode function
     } else {
@@ -139,6 +170,9 @@ function handleBtnClick(e) {
         init();
         render();
         console.log(boardArr);
+    }
+    else {
+        startTimer()
     }
 }
 
