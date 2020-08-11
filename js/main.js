@@ -31,6 +31,7 @@ let gameOver = null;
 
 /*----- cached element references -----*/
 const squareEls = document.querySelectorAll('.square');
+const indvSquare = document.querySelector('.square');
 const boardEl = document.querySelector('#cells');
 const msgEl = document.querySelector('span');
 const buttonEl = document.querySelector('button');
@@ -105,6 +106,11 @@ function gameOverMsg() {
     buttonEl.innerHTML = 'Play Again';
     return;
 }
+function clearBoard() {
+    squareEls.forEach(indvSquare => indvSquare.textContent = '');
+    msgEl.innerHTML = '';
+    buttonEl.innerHTML = 'Start';
+}
 
 
 
@@ -115,24 +121,30 @@ function handleSquareClick(e) {
     const currentSq = boardArr[i][j];
     if (currentSq.hasMine === true){
         currentSq.isCovered = false;
+        gameOver = true;
         console.log('boom!')
         gameOverMsg();
+        return;
     } else if
     (currentSq.isCovered === false && currentSq.proxNum === 0) {
         //insert sqexplode function
     } else {
         currentSq.isCovered = false;
-        e.target.innerHTML = currentSq.proxNum;  
+        e.target.textContent = currentSq.proxNum;  
     }
 }
 function handleBtnClick(e) {
-    board
-
+    if (gameOver === true) {
+        clearBoard();
+        init();
+        render();
+        console.log(boardArr);
+    }
 }
 
 
 /*----- function call sequence -----*/
 init();
 render();
-console.log(boardArr);
+//console.log(boardArr);
 
