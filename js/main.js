@@ -20,7 +20,13 @@ const board = {
 
 
 /*----- app's state (variables) -----*/
-let boardArr = [];
+let boardArr = [
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+];
+
 let winner = null;
 let timerStart = null;
 
@@ -29,7 +35,6 @@ let boardSize = null;
 
 /*----- cached element references -----*/
 const squareEls = document.querySelectorAll('.square');
-console.log(squareEls);
 const boardEl = document.querySelector('#cells');
 
 
@@ -40,45 +45,67 @@ squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
 /*----- functions -----*/
 
 function init() {
-    let width = 5;
-    let height = 4;
-    
-    // use width and height to create a new array and then put your squares into each one
-    
-    boardArr.length = 
-
-    let winner = null;
-    //render();
+    boardArr.map((row, i) => {
+        row.map((sq, j) => {
+            boardArr[i][j] = {
+             isCovered: true,
+             hasMine: false,
+             proxNum: 0,
+          }
+        }) 
+    });
+    boardArr.forEach(function(row) {
+        let mineIdx = Math.floor(Math.random()*boardArr[0].length);
+        row[mineIdx].hasMine = true;
+    });    
 }
 
 function render() {
-    // randomly generate positions of mines in array
-
-    boardArr.forEach(function(row) {
-        let mineIdx = Math.floor(Math.random()*board.length);
-        row[mineIdx]
-    });
-
-
-
-    // for each -1, create a new array of its adjacent squares
-    boardArr.forEach(function(row, idx, bArr) {
-        row.forEach(function(sq, i, bRow) {
-            if ( sq === -1 && i <= (row.length -1)) {
-                //console.log(bRow[i-1]);
-                //console.log(i);
-                //console.log(bRow.length);
-                bArr[idx][i-1] = (row[i-1] + 1);
-                bArr[idx][i+1] = (row[i+1] + 1);
-                //bArr[idx-1][i-1] = (bRow[i-1] + 1);
-                //bArr[idx-1][i] = (bRow[i] + 1);
-                //bArr[idx-1][i+1] = (bRow[i+1] + 1);
-                //bArr[idx+1][i-1] = (bRow[i-1] + 1);
-                //bArr[idx+1][i] = (bRow[i] + 1);
-                //bArr[idx+1][i+1] = (bRow[i] +1);
-            }
-            
-        });
+    boardArr.forEach((row, i) => {
+        row.forEach((sq, j) => {
+            if (boardArr[i][j].hasMine === true) {
+                    //add to prox number left of mine if not 0,0
+                if ((j > 0) && boardArr[i][j - 1] && boardArr[i][j - 1].hasMine === false) {
+                    boardArr[i][j - 1].proxNum = boardArr[i][(j - 1)].proxNum + 1;
+                    console.log('ran', i,j)
+                };      
+                    // add to prox number right of mine if not 0,4
+                if ((j < row.length - 1) && boardArr[i][j + 1] && boardArr[i][j + 1].hasMine === false) {
+                        boardArr[i][j + 1].proxNum = boardArr[i][j + 1].proxNum + 1;
+                        console.log('ran', i, j)
+                };
+                    // if not 0,0 to 0,4 add to prox number above and left
+                if ((i > 0) && (j > 0) && boardArr[i - 1][j - 1].hasMine === false) {
+                    console.log('ran', i,j)
+                    boardArr[i - 1][j - 1].proxNum = boardArr[i - 1][j - 1].proxNum + 1;
+                };
+                    // if not 0 index, add to prox number of above square
+                if ((i > 0) && boardArr[i - 1][j].hasMine === false) {
+                    console.log('ran', i,j)
+                    boardArr[i - 1][j].proxNum = boardArr[i - 1][j].proxNum + 1;
+                };
+                    // if not 0 index or 2nd index 4, add to above right 
+                if ((i > 0) && (j < row.length - 1) && boardArr[i - 1][j + 1].hasMine === false) {
+                    console.log('ran', i,j)
+                    boardArr[i - 1][j + 1].proxNum = boardArr[i - 1][j + 1].proxNum + 1;
+                };
+                    // if not 3 index or left side squares, add to square below & left
+                if ((i < boardArr.length - 1) && (j > 0) && boardArr[i + 1][j - 1].hasMine === false) {
+                    console.log('ran', i,j)
+                    boardArr[i + 1][j - 1].proxNum = boardArr[i + 1][j - 1].proxNum + 1;
+                };
+                    // if not 3 index, add to square below
+                if ((i < boardArr.length - 1) && boardArr[i + 1][j].hasMine === false) {
+                    console.log('ran', i,j)
+                    boardArr[i + 1][j].proxNum = boardArr[i + 1][j].proxNum + 1;
+                };
+                    // if not 3 index or right side squares, add to square below and right;
+                if ((i < boardArr.length - 1) && (j < row.length - 1) && boardArr[i + 1][j + 1].hasMine === false) {
+                    console.log('ran', i,j)
+                    boardArr[i + 1][j + 1].proxNum = boardArr[i + 1][j + 1].proxNum + 1;
+                };   
+            }    
+        })
     });
 }
 
@@ -87,36 +114,5 @@ function handleSquareClick(e) {
 }
 init();
 render();
-console.log(board);
+console.log(boardArr);
 
-
-
-
-
-        //strings version of board
-/*    let board = [
-        ['null', 'null', 'null', 'null', 'null'],
-        ['null', 'null', 'null', 'null', 'null'],,
-        ['null', 'null', 'null', 'null', 'null'],
-        ['null', 'null', 'null', 'null', 'null'],
-        ['null', 'null', 'null', 'null', 'null'],,
-    ]
-
-//null version of board
-    let board = [
-        [null, null, null, null, null],
-        [null, null, null, null, null],
-        [null, null, null, null, null],
-        [null, null, null, null, null],
-        [null, null, null, null, null],
-    ]
-// 1 version of board
-    let board = [
-        [1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1],
-    ]
-    */
-   
