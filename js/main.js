@@ -9,11 +9,6 @@ class Square {
 }
 
 
-// reveal logic:
-// if the user clicks on a square when the proxNum is zero, the program 
-//runs over the board and reveals any zero that is adjacent to the one
-//the user click and all non-mine squares that are adjacent to the zero squares
-
 
 /*----- app's state (variables) -----*/
 let boardArr = [
@@ -22,13 +17,13 @@ let boardArr = [
     [0,0,0,0,0],
     [0,0,0,0,0],
 ];
-
+let time = 0;
 let winner = null;
 let boardSize = null;
 let gameOver = null;
 
-
 /*----- cached element references -----*/
+
 const squareEls = document.querySelectorAll('.square');
 const indvSquare = document.querySelector('.square');
 const boardEl = document.querySelector('#cells');
@@ -41,7 +36,6 @@ const flagBtn = document.querySelector('#flag');
 
 squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
 replayBtn.addEventListener('click', handleBtnClick);
-
 
 flagBtn.addEventListener('click', flagClick);
 
@@ -72,7 +66,6 @@ function render() {
                     //add to prox number left of mine if not 0,0
                 if ((j > 0) && boardArr[i][j - 1] && boardArr[i][j - 1].hasMine === false) {
                     boardArr[i][j - 1].proxNum = boardArr[i][(j - 1)].proxNum + 1;
-                    //console.log('ran', i,j)
                 };      
                     // add to prox number right of mine if not 0,4
                 if ((j < row.length - 1) && boardArr[i][j + 1] && boardArr[i][j + 1].hasMine === false) {
@@ -106,19 +99,35 @@ function render() {
         })
     });
 }
+
+function uncoverEmpts() {
+    let i = e.target.parentElement.rowIndex;
+    let j = e.target.cellIndex;
+    const currentSq = boardArr[i][j];
+    if (currentSq.proxNum === 0) {
+        currentSq.isCovered = false;
+        currentSq.innerHTML = '0' 
+    } else {
+        return;
+    }
+}
+
 function gameOverMsg() {
     msgEl.innerHTML = 'Game Over!';
     replayBtn.innerHTML = 'Play Again';
     return;
 }
+
 function clearBoard() {
     squareEls.forEach(indvSquare => indvSquare.textContent = '');
     msgEl.innerHTML = '';
     replayBtn.innerHTML = 'Start';
 }
+
 function flagClick(e) {
     squareEls.forEach(e => e.addEventListener('contextmenu', placeFlag),{once : true})
 }
+
 function placeFlag(e) {
     e.preventDefault();
     let i = e.target.parentElement.rowIndex;
@@ -131,15 +140,25 @@ function placeFlag(e) {
     }
     console.log(boardArr);
 }
+
+        //for each square,
+function winnerCheck() {
+    boardArr.forEach((row, i) => {
+    row.some((sq, j) => {
+        return (boardArr[i][j].isCovered === true && boardArr[i][j].hasMine === false)
+        })
+    });
+}
 function startTimer(){
-    // let startTime;
-    // let tInterval;
-    // run = 0
-    // if(!run){
-    //     startTime = new Date().getTime();
-    //     tInterval = setInterval(getTime, 1000);
-    // timerEl.innerHTML = startTime;
-    // }
+    time = 0;
+    const gameTimer = window.setInterval(() => {
+        if (gameOver){
+            window.clearInterval(gameTimer);
+        } else {
+            time++;
+            timerEl.innerHTML = time;
+        }
+    }, 1000)
 }
 
 /*----- event handler functions -----*/
@@ -164,12 +183,12 @@ function handleSquareClick(e) {
         e.target.textContent = currentSq.proxNum;  
     }
 }
+
 function handleBtnClick(e) {
     if (gameOver === true) {
         clearBoard();
         init();
         render();
-        console.log(boardArr);
     }
     else {
         startTimer()
@@ -180,5 +199,5 @@ function handleBtnClick(e) {
 /*----- function call sequence -----*/
 init();
 render();
-//console.log(boardArr);
+console.log(boardArr);
 
