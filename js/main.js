@@ -1,4 +1,5 @@
 /*----- constants -----*/
+
 class Square {
     constructor(isCovered, hasMine, proxNum) {
     this.isCovered = true;
@@ -8,14 +9,14 @@ class Square {
     }
 }
 
-
-
 /*----- app's state (variables) -----*/
 let boardArr = [
-    [0,0,0,0,0],
-    [0,0,0,0,0],
-    [0,0,0,0,0],
-    [0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 ];
 let time = 0;
 let winner = null;
@@ -135,8 +136,14 @@ function placeFlag(e) {
     const currentSq = boardArr[i][j];
     if (currentSq.isFlagged === false) {
         currentSq.isFlagged = true;
+        const flag = document.createElement('img');
+        flag.src = "imgs/Flag_icon_red_4.svg"
+        flag.style.width = '10px';
+        flag.style.height = 'auto';
+        e.target.appendChild(flag);
     } else {
         currentSq.isFlagged = false;
+        e.target.innerHTML = '';
     }
 }
 
