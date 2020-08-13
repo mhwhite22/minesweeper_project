@@ -21,6 +21,7 @@ let time = 0;
 let winner = null;
 let boardSize = null;
 let gameOver = null;
+let numMines = null;
 
 /*----- cached element references -----*/
 
@@ -34,9 +35,8 @@ const flagBtn = document.querySelector('#flag');
 
 /*----- event listeners -----*/
 
-squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
+// squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
 replayBtn.addEventListener('click', handleBtnClick);
-
 flagBtn.addEventListener('click', flagClick);
 
 /*----- functions -----*/
@@ -56,7 +56,7 @@ function init() {
     boardArr.forEach(function(row) {
         let mineIdx = Math.floor(Math.random()*boardArr[0].length);
         row[mineIdx].hasMine = true;
-    });    
+    });
 }
 
 function render() {
@@ -65,52 +65,52 @@ function render() {
             if (boardArr[i][j].hasMine === true) {
                     //add to prox number left of mine if not 0,0
                 if ((j > 0) && boardArr[i][j - 1] && boardArr[i][j - 1].hasMine === false) {
-                    boardArr[i][j - 1].proxNum = boardArr[i][(j - 1)].proxNum + 1;
+                    boardArr[i][j - 1].proxNum += 1;
                 };      
                     // add to prox number right of mine if not 0,4
                 if ((j < row.length - 1) && boardArr[i][j + 1] && boardArr[i][j + 1].hasMine === false) {
-                        boardArr[i][j + 1].proxNum = boardArr[i][j + 1].proxNum + 1;
+                        boardArr[i][j + 1].proxNum += 1;
                 };
                     // if not 0,0 to 0,4 add to prox number above and left
                 if ((i > 0) && (j > 0) && boardArr[i - 1][j - 1].hasMine === false) {
-                    boardArr[i - 1][j - 1].proxNum = boardArr[i - 1][j - 1].proxNum + 1;
+                    boardArr[i - 1][j - 1].proxNum += 1;
                 };
                     // if not 0 index, add to prox number of above square
                 if ((i > 0) && boardArr[i - 1][j].hasMine === false) {
-                    boardArr[i - 1][j].proxNum = boardArr[i - 1][j].proxNum + 1;
+                    boardArr[i - 1][j].proxNum += 1;
                 };
                     // if not 0 index or 2nd index 4, add to above right 
                 if ((i > 0) && (j < row.length - 1) && boardArr[i - 1][j + 1].hasMine === false) {
-                    boardArr[i - 1][j + 1].proxNum = boardArr[i - 1][j + 1].proxNum + 1;
+                    boardArr[i - 1][j + 1].proxNum += 1;
                 };
                     // if not 3 index or left side squares, add to square below & left
                 if ((i < boardArr.length - 1) && (j > 0) && boardArr[i + 1][j - 1].hasMine === false) {
-                    boardArr[i + 1][j - 1].proxNum = boardArr[i + 1][j - 1].proxNum + 1;
+                    boardArr[i + 1][j - 1].proxNum += 1;
                 };
                     // if not 3 index, add to square below
                 if ((i < boardArr.length - 1) && boardArr[i + 1][j].hasMine === false) {
-                    boardArr[i + 1][j].proxNum = boardArr[i + 1][j].proxNum + 1;
+                    boardArr[i + 1][j].proxNum += 1;
                 };
                     // if not 3 index or right side squares, add to square below and right;
                 if ((i < boardArr.length - 1) && (j < row.length - 1) && boardArr[i + 1][j + 1].hasMine === false) {
-                    boardArr[i + 1][j + 1].proxNum = boardArr[i + 1][j + 1].proxNum + 1;
+                    boardArr[i + 1][j + 1].proxNum += 1;
                 };   
             }    
         })
     });
 }
 
-function uncoverEmpts() {
-    let i = e.target.parentElement.rowIndex;
-    let j = e.target.cellIndex;
-    const currentSq = boardArr[i][j];
-    if (currentSq.proxNum === 0) {
-        currentSq.isCovered = false;
-        currentSq.innerHTML = '0' 
-    } else {
-        return;
-    }
-}
+// function uncoverEmpts() {
+//     let i = e.target.parentElement.rowIndex;
+//     let j = e.target.cellIndex;
+//     const currentSq = boardArr[i][j];
+//     if (currentSq.proxNum === 0) {
+//         currentSq.isCovered = false;
+//         currentSq.innerHTML = '0' 
+//     } else {
+//         return;
+//     }
+// }
 
 function gameOverMsg() {
     msgEl.innerHTML = 'Game Over!';
@@ -138,17 +138,17 @@ function placeFlag(e) {
     } else {
         currentSq.isFlagged = false;
     }
-    console.log(boardArr);
 }
 
-        //for each square,
 function winnerCheck() {
-    boardArr.forEach((row, i) => {
-    row.some((sq, j) => {
-        return (boardArr[i][j].isCovered === true && boardArr[i][j].hasMine === false)
-        })
-    });
+    let superBoard = boardArr.flat(boardArr.length);
+    const numMines = superBoard.filter((sq) => sq.hasMine).length;
+    const numUncovered = superBoard.filter((sq) => !sq.isCovered).length;
+    if ((superBoard.length - numMines) === numUncovered) {
+        winner = true;
+    }
 }
+
 function startTimer(){
     time = 0;
     const gameTimer = window.setInterval(() => {
@@ -160,7 +160,6 @@ function startTimer(){
         }
     }, 1000)
 }
-
 /*----- event handler functions -----*/
 function handleSquareClick(e) {
     let i = e.target.parentElement.rowIndex;
@@ -174,6 +173,7 @@ function handleSquareClick(e) {
         gameOver = true;
         console.log('boom!')
         gameOverMsg();
+        squareEls.forEach(e => e.removeEventListener('click', handleSquareClick));
         return;
     } else if 
     (currentSq.isCovered === false && currentSq.proxNum === 0) {
@@ -182,6 +182,11 @@ function handleSquareClick(e) {
         currentSq.isCovered = false;
         e.target.textContent = currentSq.proxNum;  
     }
+    winnerCheck();
+    if (winner === true) {
+        gameOver = true;
+        msgEl.innerHTML = "Congratulations! You win!"
+    }
 }
 
 function handleBtnClick(e) {
@@ -189,15 +194,17 @@ function handleBtnClick(e) {
         clearBoard();
         init();
         render();
+        timerEl.innerHTML = 0;
+        startTimer();
+        squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
     }
     else {
+        init();
+        render();
         startTimer()
+        squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
     }
 }
 
 
-/*----- function call sequence -----*/
-init();
-render();
-console.log(boardArr);
 
