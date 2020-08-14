@@ -1,6 +1,6 @@
 /*----- constants -----*/
 const flagImg = '<img width=10 src="imgs/Flag_icon_red_4.svg">';
-const mineImg = '<img width=20 src="imgs/pngwing.com.png">';
+const mineImg = '<img width=20 src="imgs/mine.png">';
 
 /*----- app's state (variables) -----*/
 let boardArr = [
