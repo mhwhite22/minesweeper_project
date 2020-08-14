@@ -28,7 +28,7 @@ const flagBtn = document.querySelector('#flag');
 
 /*----- event listeners -----*/
 
-// squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
+squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
 replayBtn.addEventListener('click', handleBtnClick);
 flagBtn.addEventListener('click', flagClick);
 
