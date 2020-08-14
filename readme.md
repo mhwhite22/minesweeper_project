@@ -1,3 +1,10 @@
+#Minesweeper Classic
+##Marshal White
+####with HTML, CSS, & Javascript
+![alt text](imgs/gameplay.png)
+
+Minesweeper is a puzzle video game, of which the earliest ancestors date back to the 1960s and 1970s.  The popular Microsoft version was developed by Curt Johnson and was released as part of the Microsoft Entertainment Pack 1 in 1990 before being included in the standard install of Windows 3.1 in 1992.
+
 /*
 Minesweeper Project
 Marshal White

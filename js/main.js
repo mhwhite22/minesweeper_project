@@ -1,13 +1,6 @@
 /*----- constants -----*/
-
-class Square {
-    constructor(isCovered, hasMine, proxNum) {
-    this.isCovered = true;
-    this.hasMine = false;
-    this.proxNum = 0;
-    this.isFlagged = false;
-    }
-}
+const flagImg = '<img width=10 src="imgs/Flag_icon_red_4.svg">';
+const mineImg = '<img width=20 src="imgs/pngwing.com.png">';
 
 /*----- app's state (variables) -----*/
 let boardArr = [
@@ -20,7 +13,6 @@ let boardArr = [
 ];
 let time = 0;
 let winner = null;
-let boardSize = null;
 let gameOver = null;
 let numMines = null;
 
@@ -54,10 +46,13 @@ function init() {
           }
         }) 
     });
-    boardArr.forEach(function(row) {
-        let mineIdx = Math.floor(Math.random()*boardArr[0].length);
-        row[mineIdx].hasMine = true;
-    });
+    let mineNum = 24;
+    while (mineNum > 0) {
+        i = Math.floor(Math.random()*boardArr.length);
+        j = Math.floor(Math.random()*boardArr[0].length);
+        boardArr[i][j].hasMine = true;
+        mineNum -= 1;
+    }
 }
 
 function render() {
@@ -101,25 +96,22 @@ function render() {
     });
 }
 
-// function uncoverEmpts() {
-//     let i = e.target.parentElement.rowIndex;
-//     let j = e.target.cellIndex;
-//     const currentSq = boardArr[i][j];
-//     if (currentSq.proxNum === 0) {
-//         currentSq.isCovered = false;
-//         currentSq.innerHTML = '0' 
-//     } else {
-//         return;
-//     }
-// }
-
 function gameOverMsg() {
     msgEl.innerHTML = 'Game Over!';
     replayBtn.innerHTML = 'Play Again';
+    boardArr.forEach((row, i) => {
+        row.forEach((sq, j) => {
+            if (boardArr[i][j].hasMine === true) {
+            let currentCell = boardEl.rows[i].cells[j];
+            currentCell.innerHTML = mineImg;
+            }
+        })  
+    })
     return;
 }
 
 function clearBoard() {
+    squareEls.forEach(indvSquare => indvSquare.style.backgroundColor = '#c0c0c0');
     squareEls.forEach(indvSquare => indvSquare.textContent = '');
     msgEl.innerHTML = '';
     replayBtn.innerHTML = 'Start';
@@ -136,11 +128,7 @@ function placeFlag(e) {
     const currentSq = boardArr[i][j];
     if (currentSq.isFlagged === false) {
         currentSq.isFlagged = true;
-        const flag = document.createElement('img');
-        flag.src = "imgs/Flag_icon_red_4.svg"
-        flag.style.width = '10px';
-        flag.style.height = 'auto';
-        e.target.appendChild(flag);
+        e.target.innerHTML = flagImg;
     } else {
         currentSq.isFlagged = false;
         e.target.innerHTML = '';
@@ -177,14 +165,17 @@ function handleSquareClick(e) {
     } else if 
         (currentSq.hasMine === true && currentSq.isFlagged === false){
         currentSq.isCovered = false;
+        e.target.style.backgroundColor = 'red';
+        e.target.innerHTML = mineImg;
         gameOver = true;
-        console.log('boom!')
         gameOverMsg();
         squareEls.forEach(e => e.removeEventListener('click', handleSquareClick));
         return;
     } else if 
-    (currentSq.isCovered === false && currentSq.proxNum === 0) {
-        //insert sqexplode function
+    (currentSq.isCovered === true && currentSq.proxNum === 0) {
+        currentSq.isCovered = false;
+        e.target.textContent = '';
+        e.target.style.backgroundColor = '#595959';
     } else {
         currentSq.isCovered = false;
         e.target.textContent = currentSq.proxNum;  
