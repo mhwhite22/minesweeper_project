@@ -3,14 +3,9 @@ const flagImg = '<img width=10 src="imgs/Flag_icon_red_4.svg">';
 const mineImg = '<img width=20 src="imgs/mine.png">';
 
 /*----- app's state (variables) -----*/
-let boardArr = [
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-];
+let difficultyOptions = [1, 2, 3]
+let selectedDifficulty = [2]
+let boardArr = [];
 let time = 0;
 let winner = null;
 let gameOver = null;
@@ -139,12 +134,8 @@ function winnerCheck() {
     let superBoard = boardArr.flat(boardArr.length);
     const numMines = superBoard.filter((sq) => sq.hasMine).length;
     const numUncovered = superBoard.filter((sq) => !sq.isCovered).length;
-    if (winner === null) {
-        return
-    } else if {
     if ((superBoard.length - numMines) === numUncovered) {
         winner = true;
-    }
     }
 }
 
