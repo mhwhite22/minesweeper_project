@@ -141,7 +141,7 @@ function winnerCheck() {
     const numMines = superBoard.filter((sq) => sq.hasMine).length;
     const numUncovered = superBoard.filter((sq) => !sq.isCovered).length;
 
-    if (((superBoard.length - numMines) === numUncovered) && (gameRunning === true)) {
+    if ((superBoard.length - numMines) === numUncovered) {
         winner = true;
     }
 }
@@ -185,7 +185,7 @@ function handleSquareClick(e) {
         e.target.textContent = currentSq.proxNum;  
     }
     winnerCheck();
-    if (winner === true && gameRunning === true) {
+    if (winner === true) {
         gameOver = true;
         msgEl.innerHTML = "Congratulations! You win!"
     }
@@ -198,14 +198,12 @@ function handleBtnClick(e) {
         render();
         timerEl.innerHTML = 0;
         startTimer();
-        gameRunning = false
         squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
     }
     else {
         init();
         render();
         startTimer()
-        gameRunning = true
         squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
     }
 }
