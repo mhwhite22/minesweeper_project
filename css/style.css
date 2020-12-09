@@ -76,14 +76,19 @@ table {
     padding-bottom: 0;
 }
 
+
 .square {
-    max-height: 2.2vh;
-    max-width: 2.2vw;
+    max-height: 2.4vw;
+    max-width: 2.4vw;
+    height: 2.4vw;
+    width: 2.4vw;
     border: 0.5px solid #595959;
     background-color: #c0c0c0;
     gap: 0.5px;
     align-items: center;
     justify-content: center;
+    overflow-wrap: break-word;
+    word-break: break-all;
     overflow: hidden;
     white-space: nowrap;
     padding: 0;
