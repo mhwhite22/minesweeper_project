@@ -13,6 +13,7 @@ let boardArr = [
 ];
 let time = 0;
 let winner = null;
+let gameRunning = false;
 let gameOver = null;
 let numMines = null;
 
@@ -139,12 +140,9 @@ function winnerCheck() {
     let superBoard = boardArr.flat(boardArr.length);
     const numMines = superBoard.filter((sq) => sq.hasMine).length;
     const numUncovered = superBoard.filter((sq) => !sq.isCovered).length;
-    if (winner === null) {
-        return
-    } else if {
-    if ((superBoard.length - numMines) === numUncovered) {
+
+    if (((superBoard.length - numMines) === numUncovered) && (gameRunning === true)) {
         winner = true;
-    }
     }
 }
 
@@ -187,7 +185,7 @@ function handleSquareClick(e) {
         e.target.textContent = currentSq.proxNum;  
     }
     winnerCheck();
-    if (winner === true) {
+    if (winner === true && gameRunning === true) {
         gameOver = true;
         msgEl.innerHTML = "Congratulations! You win!"
     }
@@ -200,12 +198,14 @@ function handleBtnClick(e) {
         render();
         timerEl.innerHTML = 0;
         startTimer();
+        gameRunning = false
         squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
     }
     else {
         init();
         render();
         startTimer()
+        gameRunning = true
         squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
     }
 }
