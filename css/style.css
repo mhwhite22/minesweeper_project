@@ -100,7 +100,7 @@ table {
     font-size: 7.5vh;
     color: white
 }
-bottom {
+#bottom {
     display: inline;
     bottom: 0;
   }
@@ -142,3 +142,94 @@ bottom {
     background-color: grey;
     color: white;
   }
+
+@media screen and (max-width: 768px){
+
+    .table{
+        width: 100%;
+        height: 100%;
+    }
+    #boardwrapper{
+        width: 61%;
+        height: 55%;
+        max-width: 61%;
+        max-height: 55%;
+    }
+
+    .square{
+        max-width: 3.2vw;
+        max-height: 3.2vw;
+        height: 2.8vw;
+        width: 2.8vw;
+    }
+
+    #wrapper{
+        max-width: 60%;
+        width: 60%;
+        margin-top: 15px;
+    }
+    #bar{
+        max-width: 60%;
+        width: 60%;
+    }
+
+}
+
+@media screen and (max-width: 480px){
+    #bar{
+        max-width: 77%;
+        width: 77%;
+    }
+    #wrapper{
+        max-width: 77%;
+        width: 77%;
+        margin-top: 30px;
+        font-size: .9em;
+    }
+
+    #boardwrapper{
+        max-width: 77%;
+        width: 77%;
+        padding-right: 5px
+    }
+    table{
+        max-width: 77%;
+        width: 77%
+    }
+    .square{
+        max-width: 3.45vw;
+        max-height: 3.45vw;
+        height: 3.45vw;
+        width: 3.45vw;
+    }
+}
+
+@media screen and (max-width: 370px){
+    #bar{
+        max-width: 91%;
+        width: 91%;
+    }
+    #wrapper{
+        max-width: 91%;
+        width: 91%;
+        margin-top: 40px;
+        font-size: .9em;
+    }
+
+    #boardwrapper{
+        max-width: 90%;
+        width: 90%;
+        padding-right: 9px
+    }
+    table{
+        max-width: 90%;
+        width: 90%
+    }
+    .square{
+        max-width: 4.0vw;
+        max-height: 4.0vw;
+        height: 4.0vw;
+        width: 4.0vw;
+    }
+
+}

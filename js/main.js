@@ -35,6 +35,7 @@ flagBtn.addEventListener('click', flagClick);
 /*----- functions -----*/
 
 function init() {
+    winner = false;
     gameOver = false;
     boardArr.map((row, i) => {
         row.map((sq, j) => {
