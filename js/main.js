@@ -13,11 +13,11 @@ let boardArr = [
 ];
 let time = 0;
 let winner = null;
+let gameRunning = false;
 let gameOver = null;
 let numMines = null;
 
 /*----- cached element references -----*/
-
 const squareEls = document.querySelectorAll('.square');
 const indvSquare = document.querySelector('.square');
 const boardEl = document.querySelector('#cells');
@@ -28,13 +28,14 @@ const flagBtn = document.querySelector('#flag');
 
 /*----- event listeners -----*/
 
-// squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
+squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
 replayBtn.addEventListener('click', handleBtnClick);
 flagBtn.addEventListener('click', flagClick);
 
 /*----- functions -----*/
 
 function init() {
+    winner = false;
     gameOver = false;
     boardArr.map((row, i) => {
         row.map((sq, j) => {
@@ -139,6 +140,7 @@ function winnerCheck() {
     let superBoard = boardArr.flat(boardArr.length);
     const numMines = superBoard.filter((sq) => sq.hasMine).length;
     const numUncovered = superBoard.filter((sq) => !sq.isCovered).length;
+
     if ((superBoard.length - numMines) === numUncovered) {
         winner = true;
     }
@@ -155,6 +157,8 @@ function startTimer(){
         }
     }, 1000)
 }
+
+
 /*----- event handler functions -----*/
 function handleSquareClick(e) {
     let i = e.target.parentElement.rowIndex;
@@ -181,13 +185,14 @@ function handleSquareClick(e) {
         e.target.textContent = currentSq.proxNum;  
     }
     winnerCheck();
-    if (winner === true) {
+    if (winner === true && time != 0) {
         gameOver = true;
         msgEl.innerHTML = "Congratulations! You win!"
     }
 }
 
 function handleBtnClick(e) {
+
     if (gameOver === true) {
         clearBoard();
         init();
@@ -196,11 +201,14 @@ function handleBtnClick(e) {
         startTimer();
         squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
     }
-    else {
+    else if 
+    ( time === 0) {
         init();
         render();
         startTimer()
         squareEls.forEach(e => e.addEventListener('click', handleSquareClick));
+    } else {
+        return
     }
 }
 

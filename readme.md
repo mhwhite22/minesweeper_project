@@ -13,7 +13,7 @@ Minesweeper is a puzzle video game, of which the earliest ancestors date back to
 
 
 
-[Marshal's Minesweeper on Github Pages](https://github.com/mhwhite22/minesweeper_project/tree/gh-pages)
+[Marshal's Minesweeper on Github Pages](https://mhwhite22.github.io/minesweeper_project/)
 
 
 
